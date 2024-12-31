@@ -3,6 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- 引入 Bootstrap 的 CSS 與 JS，用來提供樣式和互動性 -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -14,6 +16,8 @@
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
+
+    <!-- 引入 Babel (用於轉譯 JSX 語法)，以及 React 與 ReactDOM -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script
       crossorigin
@@ -28,9 +32,11 @@
   </head>
 
   <body>
+    <!-- React 元件掛載的根元素，作為 React 應用的入口點 -->
     <div id="root"></div>
 
     <script type="text/babel">
+      // 定義產品資料的陣列，每個物件表示一個產品，包含名稱、價格、描述等資訊
       const productList = [
         {
           category: "甜甜圈",
@@ -88,12 +94,16 @@
           ],
         },
       ];
+
+      // React 主應用程式
       function App() {
+        // 定義狀態，用於暫存選中的產品資料
         const [tempProduct, setTempProduct] = React.useState({})
 
         return (
           <div className="container mt-5">
             <div className="row">
+              {/* 左側產品列表 */}
               <div className="col-6">
                 <h2>產品列表</h2>
                 <table className="table">
@@ -107,12 +117,16 @@
                     </tr>
                   </thead>
                   <tbody>
+                    {/* 使用 .map() 方法遍歷產品陣列，每個 product 代表一個產品物件
+                     將 key 設置為產品的唯一id，以幫助 React 快速更新和渲染 DOM */}
                     {productList.map((product) => (
                       <tr key={product.id}>
                         <th scope="row">{product.title}</th>
                         <td>{product.origin_price}</td>
                         <td>{product.price}</td>
+                        {/* 判斷產品是否啟用，1 表示啟用，顯示 "是"，否則顯示 "否" */}
                         <td>{product.is_enabled  === 1 ? "是" : "否"}</td>
+                        {/* 點擊查看細節按鈕後，更新選中的產品到 tempProduct 狀態，供右側詳細資訊使用 */}
                         <td><button onClick={() => {setTempProduct(product);
                         }} type="button" className="btn btn-primary">查看細節</button></td>
                       </tr>
@@ -120,8 +134,11 @@
                   </tbody>
                 </table>
               </div>
+              {/* 右側單一產品詳細資訊 */}
               <div className="col-6">
                 <h2>單一產品細節</h2>
+                {/* 如果 tempProduct.title 存在，顯示「選中的產品詳細資訊」
+                如果 tempProduct.title 不存在，提示「使用者選擇一個商品」 */}
                 {tempProduct.title ? (
                   <div className="card">
                 <img src={tempProduct.imageUrl} className="card-img-top" alt={tempProduct.title} />
@@ -143,8 +160,9 @@
         );
       }
 
+      // 抓取 HTML 中的根元素（id 是 root 的 <div>），作為 React 應用的容器
       const root = ReactDOM.createRoot(document.getElementById("root"));
-
+      // 將 App 元件渲染到 root 容器中
       root.render(<App />);
     </script>
   </body>
